@@ -1,0 +1,11 @@
+.vscode/
+
+.ccls-cache
+.git
+
+.replit
+replit.nix
+
+*.o
+*.obj
+*.exe
