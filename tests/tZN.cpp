@@ -20,8 +20,8 @@ void testZN()
     cout
         << endl
         << "--> Construction par regex" << endl;
-    string const znData = "ZN 6 MANAC'H\n[300; -200][195; -60][150; -100][150; -200][150; -261]";
-    ZN<float> znReg(zn.getNumero(), zn.getProprietaire(), zn.getForme(), znData);
+    string znData("ZN 6 MANAC'H \n[300; -200][195; -60][150; -100][150; -200][150; -261]");
+    ZN<float> znReg(znData);
     cout << znReg << endl;
 
     vector<Point2D<float>>
@@ -38,6 +38,11 @@ void testZN()
         << "Nouvel original:" << endl
         << zn << endl;
 
-    cout << "Copie:" << endl
+    cout << "Copie (non modifié):" << endl
          << zn2 << endl;
+
+    cout
+        << endl
+        << "--> Sauvegarde" << endl;
+    cout << znReg.save() << endl;
 }

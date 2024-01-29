@@ -8,9 +8,9 @@
 #include "Point2D.hpp"
 #include "../parcelle/Cubit.hpp"
 
-using namespace std;
+const std::regex reg_poly("\\[( *-?\\d+);( *-?\\d+)\\]");
 
-#define REG_POINT "\\[(-?\\d+);(-?\\d+)\\]"
+using namespace std;
 
 template <typename T>
 class Polygone;
@@ -45,7 +45,7 @@ public:
 
   void load(string data) override;
   string save(void) const override;
-  vector<Point2D<T>> serialize(string data);
+  vector<Point2D<T>> deserialize(string data);
 
   /* Friends (operator overloarding) */
   friend ostream &operator<< <T>(ostream &os, Polygone const &p);
@@ -176,28 +176,26 @@ string Polygone<T>::save(void) const
 template <typename T>
 void Polygone<T>::load(string data)
 {
-  _sommets = serialize(data);
+  _sommets = deserialize(data);
 }
 
 template <typename T>
-vector<Point2D<T>> Polygone<T>::serialize(string data)
+vector<Point2D<T>> Polygone<T>::deserialize(string data)
 {
-  // Pattern
-  regex regex(REG_POINT);
-
-  // Match handling
-  smatch match;
-  string::const_iterator searchStart(data.cbegin());
   vector<Point2D<T>> ret = vector<Point2D<T>>();
 
-  while (regex_search(searchStart, data.cend(), match, regex))
+  smatch m;
+  string::const_iterator searchStart(data.cbegin());
+
+  while (regex_search(searchStart, data.cend(), m, reg_poly))
   {
-    // Add point to the vector
-    Point2D<T> point(stoi(match[1]), stoi(match[2]));
+    cout << m[1];
+    cout << m[2];
+
+    Point2D<T> point(stoi(m[1].str().c_str()), stoi(m[2].str().c_str()));
     ret.push_back(point);
 
-    // Update of starting point for the next seek
-    searchStart = match.suffix().first;
+    searchStart = m.suffix().first;
   }
 
   return ret;

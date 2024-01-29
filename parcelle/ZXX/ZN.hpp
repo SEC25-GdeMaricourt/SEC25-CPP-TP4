@@ -9,7 +9,7 @@
 #include "../Constructible.hpp"
 
 // Type/Number/Owner/Points_list
-#define REG_ZN "(ZN) ([0-9]+) ([\\w']+) *\n(\\[[[\\d\\W ]+\\])[\n]?"
+const std::regex re_zn("(ZN) (\\d+) ([\\w']+) *\n(\\[[ \\d;\\-\\]\\[]+\\])\n?", std::regex::optimize);
 
 using namespace std;
 
@@ -29,7 +29,7 @@ public:
     /* Constructors */
     ZN(int num, string prop, Polygone<T> shape);
     ZN(const ZN<T> &other);
-    ZN(int num, string prop, Polygone<T> shape, const string data);
+    ZN(string data);
 
     /* Setter (override) */
     float setSurfaceConstructible(void) const override;
@@ -57,7 +57,7 @@ template <typename T>
 ZN<T>::ZN(const ZN<T> &other) : Parcelle<T>(other), Constructible() {}
 
 template <typename T>
-ZN<T>::ZN(int num, string prop, Polygone<T> shape, const string data) : Parcelle<T>(num, prop, shape), Constructible()
+ZN<T>::ZN(string data) : Parcelle<T>(), Constructible()
 {
     load(data);
 }
@@ -98,28 +98,17 @@ string ZN<T>::save(void) const
 template <typename T>
 void ZN<T>::deserialize(string data)
 {
-    // Pattern
-    regex regex(REG_ZN);
+    if (std::regex_match(data, re_zn))
+    {
+        std::smatch m;
+        std::regex_search(data, m, re_zn);
+        std::cout << m[1] << " " << m[2] << " " << m[3] << " " << m[4] << std::endl;
 
-    // Match handling
-    smatch match;
-    regex_search(data.cbegin(), data.cend(), match, regex);
-
-    // cout << "type:" << match[1].str() << endl;
-    // cout << "num:" << match[2].str() << endl;
-    // cout << "prop:" << match[3].str() << endl;
-    // cout << "points:" << match[4].str() << endl;
-    // Update the properties
-    this->setNumero(stoi(match[2]));
-    cout << "numero is: " << this->getNumero() << endl;
-    this->setProprietaire(match[3].str());
-    cout << "propri is: " << this->getProprietaire() << endl;
-
-    Polygone<T> newPoly(match[4].str());
-    cout << "string is " << match[4].str() << endl;
-    this->setForme(newPoly);
-    cout << "NewPlygone is: " << newPoly << endl;
-    cout << "getforme is: " << this->getForme() << endl;
+        this->setNumero(stoi(m[2].str().c_str()));
+        this->setProprietaire(m[3].str());
+        Polygone<T> newPoly(m[4].str());
+        this->setForme(newPoly);
+    }
 }
 
 template <typename T>
@@ -128,7 +117,8 @@ string ZN<T>::serialize(void) const
     stringstream ret;
     ret << "ZN "
         << this->getNumero() << " "
-        << this->getProprietaire();
+        << this->getProprietaire() << "\n"
+        << this->getForme();
     return ret.str();
 }
 

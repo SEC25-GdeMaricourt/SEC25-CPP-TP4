@@ -31,6 +31,7 @@ private:
 
 public:
     /* Constructors */
+    Parcelle();
     Parcelle(int num, string prop, Polygone<T> shape);
     Parcelle(const Parcelle<T> &p);
 
@@ -74,6 +75,14 @@ Parcelle<T>::Parcelle(const Parcelle &p) : Cubit()
     _num = p.getNumero();
     _prop = p.getProprietaire();
     _shape = p.getForme();
+}
+
+template <typename T>
+Parcelle<T>::Parcelle() : Cubit()
+{
+    _num = -1;
+    _prop = "None";
+    _shape = Polygone<T>();
 }
 
 /*
