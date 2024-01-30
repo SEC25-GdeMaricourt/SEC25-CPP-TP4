@@ -20,6 +20,7 @@ int main(void)
     cout << endl;
     // testParcelle();
     testZN();
+    tCarte();
 #else
 
 #endif

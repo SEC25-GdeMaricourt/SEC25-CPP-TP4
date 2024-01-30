@@ -5,8 +5,9 @@
 #include "../polygone/point2D.hpp"
 #include "../parcelle/Parcelle.hpp"
 #include "../parcelle/ZXX/ZN.hpp"
+#include "../carte/carte.hpp"
 
 void testPoint();
 void testPolygone();
-// void testParcelle();
 void testZN();
+void tCarte();
