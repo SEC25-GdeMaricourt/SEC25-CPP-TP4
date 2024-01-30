@@ -118,21 +118,21 @@ template <typename T>
 float Polygone<T>::getSurface() const
 {
   // Special case (should have used a circular buffer...)
-  T x_i = _sommets.back().getX();
-  T y_i = _sommets.back().getY();
-  T x_i_1 = _sommets.front().getX();
-  T y_i_1 = _sommets.front().getY();
+  T x_pi = _sommets.back().getX();
+  T y_pi = _sommets.back().getY();
+  T x_pi_1 = _sommets.front().getX();
+  T y_pi_1 = _sommets.front().getY();
 
-  float sum = ((x_i * y_i_1) - (y_i * x_i_1));
+  float sum = ((x_pi * y_pi_1) - (y_pi * x_pi_1));
 
-  for (auto it = begin(_sommets); it != prev(end(_sommets)); it++)
+  for (auto p = begin(_sommets); p != prev(end(_sommets)); p++)
   {
-    T x_i = it->getX();
-    T y_i = it->getY();
-    T x_i_1 = (next(it))->getX();
-    T y_i_1 = (next(it))->getY();
+    x_pi = p->getX();
+    y_pi = p->getY();
+    x_pi_1 = (next(p))->getX();
+    y_pi_1 = (next(p))->getY();
 
-    sum += ((x_i * y_i_1) - (y_i * x_i_1));
+    sum += ((x_pi * y_pi_1) - (y_pi * x_pi_1));
   }
 
   return abs(sum / 2);
@@ -141,18 +141,18 @@ float Polygone<T>::getSurface() const
 template <typename T>
 void Polygone<T>::translate(Point2D<T> &point)
 {
-  for (auto it = begin(_sommets); it != end(_sommets); it++)
+  for (auto p = begin(_sommets); p != end(_sommets); p++)
   {
-    it->translate(point);
+    p->translate(point);
   }
 }
 
 template <typename T>
 void Polygone<T>::translate(T x, T y)
 {
-  for (auto it = begin(_sommets); it != end(_sommets); it++)
+  for (auto p = begin(_sommets); p != end(_sommets); p++)
   {
-    it->translate(x, y);
+    p->translate(x, y);
   }
 }
 
@@ -160,9 +160,9 @@ template <typename T>
 string Polygone<T>::toString() const
 {
   stringstream ret;
-  for (auto point = begin(_sommets); point != end(_sommets); point++)
+  for (auto p = begin(_sommets); p != end(_sommets); p++)
   {
-    ret << point->toString() << " ";
+    ret << p->toString() << " ";
   }
   return ret.str();
 }
@@ -189,8 +189,8 @@ vector<Point2D<T>> Polygone<T>::deserialize(string data)
 
   while (regex_search(searchStart, data.cend(), m, reg_poly))
   {
-    cout << m[1];
-    cout << m[2];
+    // cout << m[1];
+    // cout << m[2];
 
     Point2D<T> point(stoi(m[1].str().c_str()), stoi(m[2].str().c_str()));
     ret.push_back(point);

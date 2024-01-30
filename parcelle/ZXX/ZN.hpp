@@ -9,7 +9,7 @@
 #include "../Constructible.hpp"
 
 // Type/Number/Owner/Points_list
-const std::regex re_zn("(ZN) (\\d+) ([\\w']+) *\n(\\[[ \\d;\\-\\]\\[]+\\])\n?", std::regex::optimize);
+const std::regex re_carte("(ZN) (\\d+) ([\\w']+) *\n(\\[[ \\d;\\-\\]\\[]+\\])\n?", std::regex::optimize);
 
 using namespace std;
 
@@ -98,11 +98,11 @@ string ZN<T>::save(void) const
 template <typename T>
 void ZN<T>::deserialize(string data)
 {
-    if (std::regex_match(data, re_zn))
+    if (std::regex_match(data, re_carte))
     {
         std::smatch m;
-        std::regex_search(data, m, re_zn);
-        std::cout << m[1] << " " << m[2] << " " << m[3] << " " << m[4] << std::endl;
+        std::regex_search(data, m, re_carte);
+        // std::cout << m[1] << " " << m[2] << " " << m[3] << " " << m[4] << std::endl;
 
         this->setNumero(stoi(m[2].str().c_str()));
         this->setProprietaire(m[3].str());
@@ -118,7 +118,7 @@ string ZN<T>::serialize(void) const
     ret << "ZN "
         << this->getNumero() << " "
         << this->getProprietaire() << "\n"
-        << this->getForme();
+        << this->getForme().toString();
     return ret.str();
 }
 

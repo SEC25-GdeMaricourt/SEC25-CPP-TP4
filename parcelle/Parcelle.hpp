@@ -49,9 +49,6 @@ public:
     float getSurface(void) const;
     string toString(void) const;
 
-    virtual void load(string data) = 0;
-    virtual string save(void) const = 0;
-
     /* Friends (operator overloarding) */
     friend ostream &operator<< <T>(ostream &os, Parcelle<T> const &p);
 };
