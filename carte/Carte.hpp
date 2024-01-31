@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "../parcelle/ZXX/ZN.hpp"
+#include "../parcelle/ZXX/ZA.hpp"
 #include "../parcelle/Parcelle.hpp"
 
 const std::regex re_carte("^(ZN|ZA|ZU|ZAU).*\n.*\n?");
@@ -30,6 +31,7 @@ private:
     string readStrFromF(string path);
 
     void addZN(string data);
+    void addZA(string data);
 
 public:
     /* Constructors */
@@ -79,6 +81,10 @@ void Carte<T>::deserialize(string data)
         {
             addZN(m[0]);
         }
+        else if (m[1] == "ZA")
+        {
+            addZA(m[0]);
+        }
         searchStart = m.suffix().first;
     }
 }
@@ -102,6 +108,12 @@ template <typename T>
 void Carte<T>::addZN(string data)
 {
     _v.push_back(std::make_unique<ZN<T>>(data));
+}
+
+template <typename T>
+void Carte<T>::addZA(string data)
+{
+    _v.push_back(std::make_unique<ZA<T>>(data));
 }
 
 template <typename T>
