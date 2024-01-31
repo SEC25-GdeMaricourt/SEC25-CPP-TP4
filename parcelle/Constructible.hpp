@@ -9,16 +9,21 @@ protected:
 
 public:
     /* Constructors */
-    Constructible(float sConstruite = 0, float sConstructible = 0, bool isConstructible = false);
+    Constructible(float sConstruite = 0, bool isConstructible = false);
 
     /* Getters */
     float getSurfaceConstructible(void);
     float getSurfaceConstruite(void);
+    bool isConstructible(void);
+
+    /*
+    Setters
+    */
+    void setSurfaceConstruite(float sConstruite);
 
     /*
     Setters
     To defined when inherited from
     */
-    virtual float setSurfaceConstructible(void) const = 0;
-    virtual float setSurfaceConstruite(void) const = 0;
+    virtual void setSurfaceConstructible(void) = 0;
 };

@@ -9,7 +9,7 @@
 #include "../Constructible.hpp"
 
 // Type/Number/Owner/Points_list
-const std::regex re_carte("(ZN) (\\d+) ([\\w']+) *\n(\\[[ \\d;\\-\\]\\[]+\\])\n?", std::regex::optimize);
+const std::regex re_zn("(ZN) (\\d+) ([\\w']+) *\n(\\[[ \\d;\\-\\]\\[]+\\])\n?", std::regex::optimize);
 
 using namespace std;
 
@@ -32,8 +32,7 @@ public:
     ZN(string data);
 
     /* Setter (override) */
-    float setSurfaceConstructible(void) const override;
-    float setSurfaceConstruite(void) const override;
+    void setSurfaceConstructible(void) override;
 
     /* Methods */
     string toString(void) const;
@@ -67,15 +66,9 @@ Setters (override)
 ============================
 */
 template <typename T>
-float ZN<T>::setSurfaceConstructible(void) const
+void ZN<T>::setSurfaceConstructible(void)
 {
     throw runtime_error("Une ZN n'est pas constructible.");
-}
-
-template <typename T>
-float ZN<T>::setSurfaceConstruite(void) const
-{
-    throw runtime_error("Une ZN n'a pas de surface construite.");
 }
 
 /*
@@ -98,11 +91,10 @@ string ZN<T>::save(void) const
 template <typename T>
 void ZN<T>::deserialize(string data)
 {
-    if (std::regex_match(data, re_carte))
+    if (std::regex_match(data, re_zn))
     {
         std::smatch m;
-        std::regex_search(data, m, re_carte);
-        // std::cout << m[1] << " " << m[2] << " " << m[3] << " " << m[4] << std::endl;
+        std::regex_search(data, m, re_zn);
 
         this->setNumero(stoi(m[2].str().c_str()));
         this->setProprietaire(m[3].str());

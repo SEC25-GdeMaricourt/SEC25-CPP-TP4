@@ -5,10 +5,9 @@
 Constructors
 ============================
 */
-Constructible::Constructible(float sConstruite, float sConstructible, bool isConstructible) : _isConstructible(isConstructible)
+Constructible::Constructible(float sConstruite, bool isConstructible) : _isConstructible(isConstructible)
 {
     _sConstruite = sConstruite;
-    _sConstructible = sConstructible;
 }
 
 /*
@@ -18,10 +17,25 @@ Getters
 */
 float Constructible::getSurfaceConstructible(void)
 {
-    return this->_sConstructible;
+    return _sConstructible;
 }
 
 float Constructible::getSurfaceConstruite(void)
 {
-    return this->_sConstruite;
+    return _sConstruite;
+}
+
+bool Constructible::isConstructible(void)
+{
+    return _isConstructible;
+}
+
+/*
+============================
+Setters
+============================
+*/
+void Constructible::setSurfaceConstruite(float sConstruite)
+{
+    _sConstruite = sConstruite;
 }
